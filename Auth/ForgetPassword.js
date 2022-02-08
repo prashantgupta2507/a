@@ -3,7 +3,7 @@ const { body, validationResult } = require('express-validator')
 const connection = require('../Schemas/Connection')
 const OtpSender = require('./OtpSender')
 
-router.post('/otp', [body('email', 'Enter a valid Email').isEmail()], async (req, res) => {
+router.post('/', [body('email', 'Enter a valid Email').isEmail()], async (req, res) => {
     const errors = validationResult(req)
     if (!errors.isEmpty())
         return res.status(400).json({ "errors": errors.array() })
@@ -11,8 +11,8 @@ router.post('/otp', [body('email', 'Enter a valid Email').isEmail()], async (req
     try {
         connection.query(`select * from USER where USER.email='${req.body.email}'`, async (err, result) => {
             if (err) throw err
-            if (result.length != 0)
-                return res.status(400).json({ "errors": new Array({ "msg": "Sorry a user with this email already exists" }) })
+            if (result.length === 0)
+                return res.status(400).json({ "errors": new Array({ "msg": "Sorry a user with this email not exists" }) })
             return await OtpSender(req, res);
         })
     } catch (error) {

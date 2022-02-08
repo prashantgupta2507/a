@@ -1,10 +1,8 @@
-const express = require('express')
+const router = require('express').Router()
 const { body, validationResult } = require('express-validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const connection = require('../Schemas/Connection')
-
-const router = express.Router()
 
 router.post('/login', [body('email', 'Enter a valid Email').isEmail(), body('password', 'Password cannot be blank').exists()], (req, res) => {
     const errors = validationResult(req)
