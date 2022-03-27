@@ -13,7 +13,7 @@ router.post('/fetchAllProducts', (req,res)=>{
             if(err) throw err
             if (result.length === 0)
                 return res.status(400).send({ msg: "Bad Request" })
-            connection.query(`select p.product_id, p.title, c.title as category, summary as description, price, concat(discount,'%') as discount, quantity, main_image_url, image_url1,image_url2,image_url3,image_url4,image_url5,size from product p inner join category c on p.category_id = c.category_id where invalid=${false}`, async (err, rows)=>{
+            connection.query(`select p.product_id, p.title, c.title as category, summary as description, price, concat(discount,'%') as discount, quantity, main_image_url, size from product p inner join category c on p.category_id = c.category_id where invalid=${false}`, async (err, rows)=>{
                 if(err) throw err
                 return res.status(200).send({ products: rows })
             })

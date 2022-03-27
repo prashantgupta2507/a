@@ -1,30 +1,21 @@
 const router = require('express').Router()
 const connection = require('../Schemas/Connection')
 const jwt = require('jsonwebtoken')
-const { makeDb } = require('mysql-async-simple')
 
 router.post('/pendingOrders', (req,res)=>{
     const { authtoken } = req.body;
-    const db = makeDb();
     if (!authtoken) {
         return res.status(401).send({ error: "Please authenticate using a valid token" })
     }
     try {
         const decoded = jwt.verify(authtoken,process.env.TOKEN_KEY)
-        let data = new Array()
         connection.query(`select * from user where email='${decoded.email}' and admin=${true}`,(err,rows)=>{
             if(err) throw err
             if(rows.length===0)
                 return res.status(400).send({ msg: "Bad Request" })
-            connection.query(`select * from \`order\` where pending=${true}`, async (err, rows) => {
+            connection.query(`select c.order_id 'Order Number', group_concat(s.product_name separator ' -- ') 'Products Name',group_concat(s.product_qty separator '  --  ') 'Products Quantity',group_concat(s.price separator '  --  ') 'Products Price', total_price 'Total Price', name,locality,city,state,pincode from (select order_id, o.user_id,total_price, name, locality, city, state, pincode from \`order\` o join address a on o.address_id = a.address_id where o.pending=${true}) as c join suborder s on c.order_id = s.order_id group by c.order_id`, async (err, result) => {
                 if (err) throw err
-                let i=0;
-                while(i<rows.length){
-                    const results = await db.query(connection,`select * from SUBORDER where SUBORDER.order_id = ${rows[i].order_id}`)
-                    data.push({results})
-                    i=i+1
-                }
-                return res.status(200).send({ users: rows, orders: data })
+                return res.status(200).send({pending: result })
             })
         })
     } catch (error) {

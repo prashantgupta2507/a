@@ -29,7 +29,7 @@ const createCategory = (req, res, next) => {
 }
 
 const createProduct = (req, res, next) => {
-    connection.query('CREATE TABLE if not exists PRODUCT (product_id int auto_increment primary key, title varchar(75) not null, summary varchar(2000), price double(6,2) not null, discount double(4,2) not null, quantity smallint(6) unsigned, category_id int, main_image_url varchar(2000),image_url1 varchar(2000),image_url2 varchar(2000),image_url3 varchar(2000),image_url4 varchar(2000),image_url5 varchar(2000),size varchar(10),invalid TINYINT(1) default 0,FOREIGN KEY(category_id) REFERENCES CATEGORY(category_id))', function (err) {
+    connection.query('CREATE TABLE if not exists PRODUCT (product_id int auto_increment primary key, title varchar(75) not null, summary varchar(2000), price double(6,2) not null, discount double(4,2) not null, quantity smallint(6) unsigned, category_id int, main_image_url varchar(2000),size varchar(10),invalid TINYINT(1) default 0,FOREIGN KEY(category_id) REFERENCES CATEGORY(category_id))', function (err) {
         if (err) throw err
         next()
     })

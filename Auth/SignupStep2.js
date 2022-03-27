@@ -27,13 +27,11 @@ router.post('/register', async (req, res) => {
                 else if (result.length !== 0)
                     return res.status(400).json({ Status: "Failure", Details: "First Verify your Account" })
                 else if (admin === false) {
-                    console.log('normal user')
                     connection.query(`insert into USER (email, password,first_name,last_name) values('${email}','${secPass}','${fName}','${lName}')`, (err) => {
                         if (err) throw err
                         return res.status(201).json({ Status: "Success", Details: "User Registration Successfull", "Data": { email, password, fName, lName } })
                     })
                 } else {
-                    console.log('admin user')
                     connection.query(`insert into USER (email, password,first_name,last_name, admin) values('${email}','${secPass}','${fName}','${lName}',${true})`, (err) => {
                         if (err) throw err
                         const token = jwt.sign({email, password},process.env.TOKEN_KEY,{expiresIn:"2h"})

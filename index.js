@@ -25,8 +25,6 @@ app.use('/api/auth/createUser',require('./Auth/SignupStep1'))
 app.use('/api/auth/createUser',require('./Auth/OtpVerification'))
 app.use('/api/auth/createUser',require('./Auth/SignupStep2'))
 app.use('/api/auth',require('./Auth/Login'))
-app.use('/api/auth/forgot', require('./Auth/ForgetPassword'))
-app.use('/api/auth/deleteUser', require('./Auth/DeleteAccount'))
 
 //admin related routes
 app.use('/api/admin', require('./Admin/fetchAllUsers'))
@@ -37,6 +35,8 @@ app.use('/api/admin', require('./Admin/PendingOrders'))
 app.use('/api/admin', require('./Admin/Dashboard'))
 app.use('/api/admin', require('./Admin/DeleteProduct'))
 app.use('/api/admin', require('./Admin/UpdateProduct'))
+app.use('/api/admin', require('./Admin/ConfirmOrder'))
+app.use('/api/admin', require('./Admin/CancelOrder'))
 
 //user related routes
 app.use('/api/user', require('./User/fetchProduct'))

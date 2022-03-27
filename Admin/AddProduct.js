@@ -4,7 +4,7 @@ const connection = require('../Schemas/Connection')
 const { makeDb } = require('mysql-async-simple')
 
 router.post('/addProduct', (req, res) => {
-    const { authtoken, category_title, title, quantity, sale_price, list_price, description, main_image_url, image_url1, image_url2, image_url3, image_url4, image_url5, size } = req.body;
+    const { authtoken, category_title, title, quantity, sale_price, list_price, description, main_image_url, size } = req.body;
     const db = makeDb();
     if (!authtoken) {
         return res.status(401).send({ error: "Please authenticate using a valid token" })
@@ -24,7 +24,7 @@ router.post('/addProduct', (req, res) => {
                 }
                 connection.query(`select category_id from category where title="${category_title}"`, (err, rows) => {
                     if (err) throw err
-                    connection.query(`insert into product (title,summary,price,discount,quantity,category_id,main_image_url,image_url1,image_url2,image_url3,image_url4,image_url5,size) values ("${title}","${description}",${sale_price},${discount},${quantity},${rows[0].category_id},"${main_image_url}","${image_url1}","${image_url2}","${image_url3}","${image_url4}","${image_url5}",'${size ? size : null}')`, (err) => {
+                    connection.query(`insert into product (title,summary,price,discount,quantity,category_id,main_image_url,size) values ("${title}","${description}",${sale_price},${discount},${quantity},${rows[0].category_id},"${main_image_url}",'${size ? size : null}')`, (err) => {
                         if (err) throw err
                         return res.status(201).json({ Status: "Success", Details: "Product Added Successfully" })
                     })
