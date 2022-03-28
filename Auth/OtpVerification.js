@@ -52,7 +52,7 @@ router.post('/verify/otp', async (req, res) => {
                                     return res.status(200).json({ Status: "Success", Details: "OTP Matched Successfully" })
                                 else {
                                     // Updating Password
-                                    if(!password)
+                                    if (!password)
                                         return res.status(400).json({ Status: "Failure", Details: "Password not provided" })
                                     const salt = await bcrypt.genSalt(10)
                                     const secPass = await bcrypt.hash(password, salt);

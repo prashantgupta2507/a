@@ -14,14 +14,14 @@ router.post('/login', (req, res) => {
         if (!password)
             return res.status(400).json({ Status: "Failure", Details: "Password not be null" })
 
-        connection.query(`select * from USER where email='${email}'`, async (err, result) => {
+        connection.query(`select * from USER where email="${email}"`, async (err, result) => {
             if (err) throw err
             if (result.length == 0)
                 return res.status(400).json({ errors: "Please try to login with correct credentials" })
             const passwordCompare = await bcrypt.compare(password, result[0].password)
             if (!passwordCompare)
                 return res.status(400).json({ errors: "Please try to login with correct credentials" })
-            const token = jwt.sign({email, password},process.env.TOKEN_KEY,{expiresIn:"2h"})
+            const token = jwt.sign({ email, password }, process.env.TOKEN_KEY, { expiresIn: "2h" })
             let data = new Array()
             connection.query(`select * from \`ORDER\` o where o.user_id=${result[0].user_id}`, async (err, rows) => {
                 if (err) throw err
@@ -31,7 +31,7 @@ router.post('/login', (req, res) => {
                     data.push({ result })
                     i = i + 1;
                 }
-                return res.status(302).json({ Status: "Success", Details: "Login Successfull", Data: { email, fName: result[0].first_name, lName: result[0].last_name, admin: result[0].admin, phone: result[0].mobile, gender:result[0].gender, orders: data, token } })
+                return res.status(302).json({ Status: "Success", Details: "Login Successfull", Data: { email, fName: result[0].first_name, lName: result[0].last_name, admin: result[0].admin, phone: result[0].mobile, gender: result[0].gender, orders: data, token } })
             })
         })
     } catch (error) {

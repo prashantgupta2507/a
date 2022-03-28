@@ -17,7 +17,7 @@ router.post('/orders/complete-order', (req, res) => {
                     const r = await db.query(connection, `select * from product where product_id=${items[i].productId}`)
                     await db.query(connection, `insert into suborder (order_id,product_name,product_img,product_qty,price) values(${result.insertId},'${r[0].title}','${r[0].main_image_url}',${items[i].qty},${items[i].price})`)
                     const r2 = await db.query(connection, `select quantity from product where product_id = ${items[i].productId}`)
-                    await db.query(connection,`update product set quantity = ${r2[0].quantity - items[i].qty} where product_id = ${items[i].productId}`)
+                    await db.query(connection, `update product set quantity = ${r2[0].quantity - items[i].qty} where product_id = ${items[i].productId}`)
                 }
                 return res.status(200).json({ Status: "Success", Details: "Order Added Successfully" })
             })

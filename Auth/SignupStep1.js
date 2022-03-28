@@ -6,7 +6,7 @@ const OtpSender = require('./OtpSender')
 router.post('/otp', [body('email', 'Enter a valid Email').isEmail()], async (req, res) => {
     const errors = validationResult(req)
     if (!errors.isEmpty())
-       return res.status(400).json({ errors: errors.array() })
+        return res.status(400).json({ errors: errors.array() })
     // check whether the user exist with this email
     try {
         connection.query(`select * from USER where USER.email='${req.body.email}'`, async (err, result) => {

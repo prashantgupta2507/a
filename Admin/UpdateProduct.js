@@ -11,7 +11,7 @@ router.post('/updateProduct', (req, res) => {
         const decoded = jwt.verify(authtoken, process.env.TOKEN_KEY)
         const discount = ((list_price - sale_price) / list_price) * 100;
 
-        connection.query(`select * from user where email='${decoded.email}' and admin=${true}`, (err, result) => {
+        connection.query(`select * from user where email="${decoded.email}" and admin=${true}`, (err, result) => {
             if (err) throw err
             if (result.length === 0)
                 return res.status(400).send({ msg: "Bad Request" })

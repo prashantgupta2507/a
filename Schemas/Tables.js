@@ -43,8 +43,8 @@ const createOrder = (req, res, next) => {
 }
 
 const createSubOrder = (req, res, next) => {
-    connection.query('CREATE TABLE if not exists SUBORDER (order_id int, product_name varchar(100), product_img varchar(2000), product_qty int, price double(6,2),FOREIGN KEY(order_id) REFERENCES `ORDER`(order_id))', function(err){
-        if(err) throw err
+    connection.query('CREATE TABLE if not exists SUBORDER (order_id int, product_name varchar(100), product_img varchar(2000), product_qty int, price double(6,2),FOREIGN KEY(order_id) REFERENCES `ORDER`(order_id))', function (err) {
+        if (err) throw err
         next()
     })
 }

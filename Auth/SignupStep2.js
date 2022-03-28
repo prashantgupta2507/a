@@ -34,8 +34,8 @@ router.post('/register', async (req, res) => {
                 } else {
                     connection.query(`insert into USER (email, password,first_name,last_name, admin) values('${email}','${secPass}','${fName}','${lName}',${true})`, (err) => {
                         if (err) throw err
-                        const token = jwt.sign({email, password},process.env.TOKEN_KEY,{expiresIn:"2h"})
-                        return res.status(201).json({ Status: "Success", Details: "User Registration Successfull", Data: { email:email, password:password, fName:fName, lName:lName, admin: true,token } })
+                        const token = jwt.sign({ email, password }, process.env.TOKEN_KEY, { expiresIn: "2h" })
+                        return res.status(201).json({ Status: "Success", Details: "User Registration Successfull", Data: { email: email, password: password, fName: fName, lName: lName, admin: true, token } })
                     })
                 }
             })
